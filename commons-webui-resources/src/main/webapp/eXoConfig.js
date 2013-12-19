@@ -10,11 +10,11 @@ CKEDITOR.eXoPath = CKEDITOR.basePath.substr(0, CKEDITOR.basePath.indexOf("ckedit
 (function() {CKEDITOR.plugins.addExternal('insertPortalLink','/eXoWCMResources/eXoPlugins/insertPortalLink/','plugin.js');})();
 (function() {CKEDITOR.plugins.addExternal('acceptInline','/eXoWCMResources/eXoPlugins/acceptInline/','plugin.js');})();
 (function() {CKEDITOR.plugins.addExternal('cancelInline','/eXoWCMResources/eXoPlugins/cancelInline/','plugin.js');})();
-(function() {CKEDITOR.plugins.addExternal('helpBBCode','/forumResources/eXoPlugins/helpBBCode/','plugin.js');})();
+//(function() {CKEDITOR.plugins.addExternal('helpBBCode','/forumResources/eXoPlugins/helpBBCode/','plugin.js');})();
 (function() {CKEDITOR.plugins.addExternal('toc','/wiki/eXoPlugins/toc/','plugin.js');})();
 
 CKEDITOR.editorConfig = function( config ){
-	config.extraPlugins = 'content,insertGadget,insertPortalLink,scayt,wsc,acceptInline,cancelInline,onchange,helpBBCode,syntaxhighlight,toc';
+	config.extraPlugins = 'content,insertGadget,insertPortalLink,scayt,wsc,acceptInline,cancelInline,onchange,syntaxhighlight,toc';//,helpBBCode
 	config.toolbarCanCollapse = false;
 	config.skin = 'moono';
 	config.allowedContent = true;
