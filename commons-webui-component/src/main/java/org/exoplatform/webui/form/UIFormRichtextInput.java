@@ -129,7 +129,7 @@ public class UIFormRichtextInput extends UIFormInputBase<String> {
     }
     
     buffer.append("<script type='text/javascript'>\n");
-    buffer.append("    require(['/CommonsResources/ckeditor/ckeditor.js'], function() {");
+    buffer.append("if (typeof CKEDITOR != 'undefined') {");
     buffer.append("  //<![CDATA[\n");
     buffer.append("    var instance = CKEDITOR.instances['" + name + "']; if (instance) { CKEDITOR.remove(instance); instance = null;}\n");
     if(isPasteAsPlainText)
@@ -139,7 +139,19 @@ public class UIFormRichtextInput extends UIFormInputBase<String> {
     	buffer.append("    CKEDITOR.replace('" + name + "', {toolbar:'" + toolbar + "', height:"
         	+ height + ", contentsCss:" + css + ", enterMode:" + enterMode + ", shiftEnterMode:" + enterMode + "});\n");
     buffer.append("    instance = CKEDITOR.instances['" + name + "']; instance.on( 'change', function(e) { document.getElementById('"+name+"').value = instance.getData(); }); \n");
+    buffer.append(" } else {");
+    buffer.append("    require(['/CommonsResources/ckeditor/ckeditor.js'], function() {");
+    buffer.append("  //<![CDATA[\n");
+    buffer.append("    var instance = CKEDITOR.instances['" + name + "']; if (instance) { CKEDITOR.remove(instance); instance = null;}\n");
+    if(isPasteAsPlainText)
+      buffer.append("    CKEDITOR.replace('" + name + "', {toolbar:'" + toolbar + "', height:"
+        + height + ", forcePasteAsPlainText: true, contentsCss:" + css + ", enterMode:" + enterMode + ", shiftEnterMode:" + enterMode + "});\n");
+    else
+      buffer.append("    CKEDITOR.replace('" + name + "', {toolbar:'" + toolbar + "', height:"
+          + height + ", contentsCss:" + css + ", enterMode:" + enterMode + ", shiftEnterMode:" + enterMode + "});\n");
+    buffer.append("    instance = CKEDITOR.instances['" + name + "']; instance.on( 'change', function(e) { document.getElementById('"+name+"').value = instance.getData(); }); \n");
     buffer.append("       });");
+    buffer.append("}");
     buffer.append("  //]]>\n");
     buffer.append("</script>\n");
     buffer.append("</span>");
