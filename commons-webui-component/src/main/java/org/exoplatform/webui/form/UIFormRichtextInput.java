@@ -11,6 +11,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
  */
 public class UIFormRichtextInput extends UIFormInputBase<String> {
 
+  public static final String DEFAULT_TOOLBAR = "Default";
   public static final String FULL_TOOLBAR = "CompleteWCM";
   public static final String BASIC_TOOLBAR = "Basic";
   public static final String SUPER_BASIC_TOOLBAR = "SuperBasicWCM";

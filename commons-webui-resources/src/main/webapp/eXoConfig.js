@@ -12,9 +12,11 @@ CKEDITOR.eXoPath = CKEDITOR.basePath.substr(0, CKEDITOR.basePath.indexOf("ckedit
 (function() {CKEDITOR.plugins.addExternal('cancelInline','/eXoWCMResources/eXoPlugins/cancelInline/','plugin.js');})();
 //(function() {CKEDITOR.plugins.addExternal('helpBBCode','/forumResources/eXoPlugins/helpBBCode/','plugin.js');})();
 (function() {CKEDITOR.plugins.addExternal('toc','/wiki/eXoPlugins/toc/','plugin.js');})();
+(function() {CKEDITOR.plugins.addExternal('children','/wiki/eXoPlugins/children/','plugin.js');})();
 
 CKEDITOR.editorConfig = function( config ){
-	config.extraPlugins = 'content,insertGadget,insertPortalLink,scayt,wsc,acceptInline,cancelInline,onchange,syntaxhighlight,toc';//,helpBBCode
+	config.extraPlugins = 'content,insertGadget,insertPortalLink,scayt,wsc,acceptInline,cancelInline,' 
+						+ 'onchange,syntaxhighlight,toc,children';//,helpBBCode
 	config.toolbarCanCollapse = false;
 	config.skin = 'moono';
 	config.allowedContent = true;
@@ -37,7 +39,8 @@ CKEDITOR.editorConfig = function( config ){
 		['Image','Flash','Table','SpecialChar'],
 		['TextColor','BGColor'],
 		['Maximize', 'ShowBlocks'],
-		['Style','Format','Font','FontSize']
+		['Style','Format','Font','FontSize'],
+		['Toc','Preview','Children']
 	] ;
 
 	config.toolbar_Basic = [
@@ -53,7 +56,7 @@ CKEDITOR.editorConfig = function( config ){
 		['Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','SelectAll','Scayt','-','Undo','Redo'],
 		['insertGadget.btn','Flash','Table','SpecialChar', 'content.btn', 'Image'], 		['Bold','Italic','Underline','Strike','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','NumberedList','BulletedList','-','TextColor','BGColor','-','RemoveFormat'],
 		['Link','insertPortalLink.btn','Unlink','Anchor'],		
-		['Style','Format','Font','FontSize', '-' ,'Maximize','Toc','Preview']
+		['Style','Format','Font','FontSize', '-' ,'Maximize']
 	] ;
 	
 	config.toolbar_BasicWCM = [
