@@ -7,6 +7,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.api.notification.model.UserSetting;
+import org.exoplatform.commons.api.notification.service.storage.NotificationService;
 import org.exoplatform.commons.notification.impl.setting.UserSettingServiceImpl;
 import org.exoplatform.commons.testing.BaseCommonsTestCase;
 import org.exoplatform.commons.utils.CommonsUtils;
@@ -31,7 +32,7 @@ public class UserSettingServiceTest extends BaseCommonsTestCase {
     // init setting home
     initSettingHome();
     //
-    userSettingService.start();
+    getService(NotificationService.class).processDigest();
     //
     initModifiedDate();
   }

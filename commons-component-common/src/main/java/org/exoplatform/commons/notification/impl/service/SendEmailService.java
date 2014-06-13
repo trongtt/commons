@@ -82,7 +82,7 @@ public class SendEmailService implements ManagementAware {
   public long getCurrentCapacity() {
     return currentCapacity;
   }
-  
+
   @Managed
   @ManagedDescription("Turn on the mail service.")
   @Impact(ImpactType.READ)
@@ -166,9 +166,25 @@ public class SendEmailService implements ManagementAware {
     return queueMessage.removeAll();
   }
   
+  @Managed
+  @ManagedDescription("Removes all users setting that stored in database.")
+  @Impact(ImpactType.READ)
+  public String removeUsersSetting() {
+    return queueMessage.removeUsersSetting();
+  }
+  
   private void makeJob() {
     if (isOn) {
       this.queueMessage.makeJob(emailPerSend, interval * 1000);
+    }
+  }
+  
+  @Managed
+  @ManagedDescription("Set value of System properites.")
+  @Impact(ImpactType.READ)
+  public void setSystem(String key, String value) {
+    if (key != null && key.length() > 0 && value != null) {
+      System.setProperty(key, value);
     }
   }
 }

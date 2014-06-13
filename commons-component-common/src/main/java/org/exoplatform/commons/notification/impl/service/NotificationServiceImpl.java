@@ -17,6 +17,7 @@
 package org.exoplatform.commons.notification.impl.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +40,12 @@ import org.exoplatform.commons.notification.NotificationUtils;
 import org.exoplatform.commons.notification.impl.AbstractService;
 import org.exoplatform.commons.notification.impl.NotificationContextImpl;
 import org.exoplatform.commons.utils.CommonsUtils;
+import org.exoplatform.commons.utils.ListAccess;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 import org.exoplatform.services.mail.MailService;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 
 public class NotificationServiceImpl extends AbstractService implements NotificationService {
   private static final Log         LOG              = ExoLogger.getLogger(NotificationServiceImpl.class);
@@ -166,6 +170,8 @@ public class NotificationServiceImpl extends AbstractService implements Notifica
      * + limit = 50 time lost: 44873ms user settings 70630ms default user settings.
      * + limit = 100 time lost: 26997ms user settings 60051ms default user settings.
     */
+    List<UserSetting> doneUsers = new ArrayList<UserSetting>();
+    
     long startTime = System.currentTimeMillis();
     int limit = 100;
     int offset = 0;
@@ -176,22 +182,57 @@ public class NotificationServiceImpl extends AbstractService implements Notifica
       }
       send(digest, mailService, userSettings, null);
       offset += limit;
+      doneUsers.addAll(userSettings);
     }
     LOG.debug("Time to run process users have settings: " + (System.currentTimeMillis() - startTime) + "ms.");
-    startTime = System.currentTimeMillis();
+    long startTimeDefault = System.currentTimeMillis();
     //process for users used default setting
     offset = 0;
     while (true) {
       List<UserSetting> usersDefaultSettings = userService.getDefaultDaily(offset, limit);
-      if(usersDefaultSettings.size() == 0) {
+      if (usersDefaultSettings.size() == 0) {
         break;
       }
       send(digest, mailService, usersDefaultSettings, defaultSetting);
       offset += limit;
+      doneUsers.addAll(usersDefaultSettings);
     }
+    //
+    processDedaultUserSetting(mailService, userService, digest, defaultSetting, doneUsers);
+    
     //Clear all stored message
     storage.removeMessageAfterSent();
-    LOG.debug("Time to run process users used default settings: " + (System.currentTimeMillis() - startTime) + "ms.");
+    LOG.debug("Time to run process users used default settings: " + (System.currentTimeMillis() - startTimeDefault) + "ms.");
+  }
+
+  private void processDedaultUserSetting(MailService mailService, UserSettingService userService, DigestorService digest,
+                                         UserSetting defaultSetting, List<UserSetting> doneUsers) throws Exception {
+    OrganizationService organizationService = CommonsUtils.getService(OrganizationService.class);
+    ListAccess<User> allUsers = organizationService.getUserHandler().findAllUsers();
+    if (allUsers.getSize() > doneUsers.size()) {
+      User[] users = allUsers.load(0, allUsers.getSize());
+      List<User> addMixinUsers = new ArrayList<User>();
+      List<UserSetting> usersDefaultSettings = new ArrayList<UserSetting>();
+      UserSetting userSetting;
+      Calendar cal = Calendar.getInstance();
+      for (int i = 0; i < users.length; i++) {
+        userSetting = UserSetting.getInstance().setUserId(users[i].getUserName());
+        if (!doneUsers.contains(userSetting)) {
+          //
+          cal.setTime(users[i].getCreatedDate());
+          usersDefaultSettings.add(userSetting.setLastUpdateTime(cal));
+          //
+          addMixinUsers.add(users[i]);
+        }
+      }
+      //
+      send(digest, mailService, usersDefaultSettings, defaultSetting);
+      LOG.debug("Done sent notification for " + usersDefaultSettings.size() + " users must addMixin.");
+      //
+      long startTime = System.currentTimeMillis();
+      userService.addMixin(addMixinUsers.toArray(new User[addMixinUsers.size()]));
+      LOG.debug("Done addMixin for " + usersDefaultSettings.size() + " users, time: " + (System.currentTimeMillis() - startTime) + "ms.");
+    }
   }
   
   private void send(DigestorService digest, MailService mail, List<UserSetting> userSettings, UserSetting defaultSetting) throws Exception {
