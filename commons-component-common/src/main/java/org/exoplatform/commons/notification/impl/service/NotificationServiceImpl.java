@@ -209,10 +209,23 @@ public class NotificationServiceImpl extends AbstractService implements Notifica
                                          UserSetting defaultSetting, List<UserSetting> doneUsers) throws Exception {
     OrganizationService organizationService = CommonsUtils.getService(OrganizationService.class);
     ListAccess<User> allUsers = organizationService.getUserHandler().findAllUsers();
-    if (allUsers.getSize() > doneUsers.size()) {
-      User[] users = allUsers.load(0, allUsers.getSize());
+    int from = 0;
+    int size = allUsers.getSize();
+    int to = (size > 200) ? 200 : size;
+    if (size > doneUsers.size()) {
       List<User> addMixinUsers = new ArrayList<User>();
       List<UserSetting> usersDefaultSettings = new ArrayList<UserSetting>();
+      
+      while (true) {
+        User[] users = allUsers.load(from, to);
+        
+        
+        from = to;
+        
+      }
+      
+      
+      
       UserSetting userSetting;
       Calendar cal = Calendar.getInstance();
       for (int i = 0; i < users.length; i++) {
