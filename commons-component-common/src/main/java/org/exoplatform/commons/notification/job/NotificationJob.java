@@ -22,40 +22,50 @@ import org.exoplatform.commons.api.notification.service.NotificationCompletionSe
 import org.exoplatform.commons.notification.NotificationUtils;
 import org.exoplatform.commons.notification.impl.NotificationSessionManager;
 import org.exoplatform.commons.utils.CommonsUtils;
+import org.exoplatform.job.MultiTenancyJob;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
-public abstract class NotificationJob implements Job {
+public abstract class NotificationJob extends MultiTenancyJob {
   protected static final Log LOG = ExoLogger.getLogger(NotificationJob.class);
-  
-  public NotificationJob() {
-  }
 
   @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException {
-    if (isValid() == false) {
-      return;
+  public Class<? extends MultiTenancyTask> getTask() {
+    return NotificationTask.class;
+  }
+
+  public class NotificationTask extends MultiTenancyTask {
+    public NotificationTask(JobExecutionContext context, String repoName) {
+      super(context, repoName);
     }
-    Callable<Boolean> task = new Callable<Boolean>() {
-      @Override
-      public Boolean call() throws Exception {
-        try {
-          NotificationSessionManager.createSystemProvider();
-          processSendNotification();
-        } catch (Exception e) {
-          LOG.error("Failed to running NotificationJob", e);
-          return false;
-        } finally {
-          NotificationSessionManager.closeSessionProvider();
-        }
-        return true;
+
+    @Override
+    public void run() {
+      super.run();
+      //
+      if (isValid() == false) {
+        return;
       }
-    };
-    //
-    CommonsUtils.getService(NotificationCompletionService.class).addTask(task);
+      Callable<Boolean> task = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+          //
+          try {
+            NotificationSessionManager.createSystemProvider();
+            processSendNotification();
+            return true;
+          } catch (Exception e) {
+            LOG.error("Failed to running NotificationJob", e);
+          } finally {
+            NotificationSessionManager.closeSessionProvider();
+          }
+          return false;
+        }
+      };
+      CommonsUtils.getService(NotificationCompletionService.class).addTask(task);
+    }
+
   }
 
   protected boolean isValid() {
@@ -66,6 +76,6 @@ public abstract class NotificationJob implements Job {
       return false;
     }
   }
-  
+
   protected abstract void processSendNotification() throws Exception;
 }

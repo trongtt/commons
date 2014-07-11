@@ -18,22 +18,34 @@ package org.exoplatform.commons.notification.job;
 
 import org.exoplatform.commons.api.notification.service.QueueMessage;
 import org.exoplatform.commons.utils.CommonsUtils;
+import org.exoplatform.job.MultiTenancyJob;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
-public class SendEmailNotificationJob implements Job {
+public class SendEmailNotificationJob extends MultiTenancyJob {
   private static final Log LOG = ExoLogger.getLogger(SendEmailNotificationJob.class);
 
   @Override
-  public void execute(JobExecutionContext context) throws JobExecutionException {
-    try {
-      CommonsUtils.getService(QueueMessage.class).send();
-    } catch (Exception e) {
-      LOG.error("Failed to running NotificationJob", e);
-    }
+  public Class<? extends MultiTenancyTask> getTask() {
+    return SendEmailTask.class;
   }
 
+  public class SendEmailTask extends MultiTenancyTask {
+
+    public SendEmailTask(JobExecutionContext context, String repoName) {
+      super(context, repoName);
+    }
+
+    @Override
+    public void run() {
+      super.run();
+      //
+      try {
+        CommonsUtils.getService(QueueMessage.class).send();
+      } catch (Exception e) {
+        LOG.error("Failed to running NotificationJob", e);
+      }
+    }
+  }
 }
