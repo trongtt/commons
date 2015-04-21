@@ -42,6 +42,18 @@ public class CommonsUtilsTest extends BaseCommonsTestCase {
     assertEquals("rest", CommonsUtils.getRestContextName());
   }
   
+  public void testRemoveXSS() {
+    String output = CommonsUtils.removeXSS("<script    />");
+    assertFalse(output.startsWith("<script"));
+    assertFalse(output.endsWith("/>"));
+    
+    output = CommonsUtils.removeXSS("<script>alert(\"ssss\")    </script>");
+    assertFalse(output.startsWith("<script"));
+    assertFalse(output.endsWith("</script>"));
+    output = CommonsUtils.removeXSS("<>");
+    assertTrue(output.startsWith("<>"));
+  }
+  
   public void testGetCurrentDomain() {
     try {
       CommonsUtils.getCurrentDomain();

@@ -144,4 +144,42 @@ public class CommonsUtils {
       }
     }
     
+    /**
+     * Escape HTML characters to avoid XSS attack  
+     * @param input content contain HTML content
+     * @return safe content
+     */
+    public static String removeXSS(String input) 
+    {
+      StringBuffer sb = new StringBuffer();
+      boolean isEscapeNextGreaterThan = false;
+      for(int i = 0;i< input.length();i++){
+        switch (input.charAt(i)) {
+        case '<':
+          if(i < input.length() - 7){
+            if(input.substring(i + 1, i + 7).equals("script")
+                ||input.substring(i + 1, i + 7).equals("/scrip")){
+              sb.append("&lt;");
+              isEscapeNextGreaterThan = true;
+            }
+          }
+          else
+            sb.append(input.charAt(i));
+          break;
+        case '>':
+          if(isEscapeNextGreaterThan){
+            sb.append("&gt;");
+            isEscapeNextGreaterThan = false;
+          } else{
+            sb.append(">");
+          }
+          break;
+        default:
+          sb.append(input.charAt(i));
+          break;
+        }
+      }
+      return sb.toString();
+    }
+    
 }
