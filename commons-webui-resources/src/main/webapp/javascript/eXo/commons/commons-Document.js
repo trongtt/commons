@@ -199,6 +199,7 @@ DocumentSelector.prototype.renderDetailsFolder = function(documentItem) {
   url += "&" + this.isFolderOnlyParam + "=false";
   // To avoid the problem ajax caching on IE (issue: COMMONS-109)
   url += "&dummy=" + new Date().getTime();
+  url = encodeURI(url);
   var data = me.request(url);
   var folderContainer = data.getElementsByTagName("Folders")[0];
   var folderList = folderContainer.getElementsByTagName("Folder");
@@ -416,6 +417,7 @@ DocumentSelector.prototype.newFolder = function(inputFolderName){
   url += "&" + me.workspaceNameParam + "=" + workspaceName;
   url += "&" + me.currentFolderParam + "=" + me.selectedItem.currentFolder;
   url += "&" + me.folderNameParam + "=" + folderName;  
+  url = encodeURI(url);
   me.request(url);
   me.renderDetails(me.selectedItem);
 };
