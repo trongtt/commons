@@ -30,6 +30,11 @@
     </component>
 
   <component>
+  	<key>org.exoplatform.services.user.InjectNotification</key>
+   	<type>org.exoplatform.services.user.InjectNotification</type>
+  </component>
+
+  <component>
     <key>org.exoplatform.commons.embedder.OembedEmbedder</key>
     <type>org.exoplatform.commons.embedder.OembedEmbedder</type>
     <init-params>
