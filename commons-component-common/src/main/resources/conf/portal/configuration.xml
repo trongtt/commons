@@ -28,6 +28,11 @@
   </component>
 
   <component>
+    <key>org.exoplatform.commons.api.localization.LocalizationService</key>
+    <type>org.exoplatform.commons.notification.impl.localization.LocalizationServiceImp</type>
+  </component>
+
+  <component>
     <key>org.exoplatform.commons.embedder.OembedEmbedder</key>
     <type>org.exoplatform.commons.embedder.OembedEmbedder</type>
     <init-params>
