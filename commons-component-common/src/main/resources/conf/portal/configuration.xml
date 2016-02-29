@@ -29,7 +29,7 @@
 
   <component>
     <key>org.exoplatform.commons.api.localization.LocalizationService</key>
-    <type>org.exoplatform.commons.notification.impl.localization.LocalizationServiceImp</type>
+    <type>org.exoplatform.commons.localization.LocalizationServiceImpl</type>
   </component>
 
   <component>

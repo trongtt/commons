@@ -1,4 +1,4 @@
-package org.exoplatform.commons.notification.impl.localization;
+package org.exoplatform.commons.localization;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.component.ComponentRequestLifecycle;
@@ -23,19 +23,31 @@ import java.util.Locale;
 import java.util.Set;
 
 /**
+ * This service  is for determining The Locale of the current user .
+ * This service is registered through portal services configuration file: conf/portal/configuration.xml .
+ * The Locale will be appropriately narrowed by LocalePolicy caller.
+ *
  * Created by Racha on 29/01/2016.
  */
-public class LocalizationServiceImp implements LocalizationService {
+public class LocalizationServiceImpl implements LocalizationService {
 
 
-    private static final Log LOG = ExoLogger.getLogger(LocalizationServiceImp.class);
-    private String lang = null;
+    private static final Log LOG = ExoLogger.getLogger(LocalizationServiceImpl.class);
 
+    private LocaleConfigService localeConfigService;
+    private LocalePolicy localePolicy;
+    private OrganizationService svc;
+
+    public LocalizationServiceImpl(LocaleConfigService localeConfigService, LocalePolicy localePolicy, OrganizationService organizationService) {
+        this.localeConfigService = localeConfigService;
+        this.localePolicy = localePolicy;
+        this.svc=organizationService;
+    }
     @Override
-   public String getLanguage(ExoContainer container,Identity currentUser,  HttpServletRequest request ){
+   public Locale getLocale(ExoContainer container, Identity currentUser, HttpServletRequest request){
+
         try {
-            LocaleConfigService localeConfigService = (LocaleConfigService) container.getComponentInstanceOfType(LocaleConfigService.class);
-            LocalePolicy localePolicy = (LocalePolicy) container.getComponentInstanceOfType(LocalePolicy.class);
+
             LocaleContextInfo localeCtx = new LocaleContextInfo();
             Locale portalLocale = Locale.getDefault();
             Set<Locale> supportedLocales = new HashSet();
@@ -53,12 +65,11 @@ public class LocalizationServiceImp implements LocalizationService {
 
             localeCtx.setPortalLocale(checkPortalLocaleSupported(portalLocale, supportedLocales));
             Locale locale = localePolicy.determineLocale(localeCtx);
-            lang = locale.getLanguage();
+            return locale;
 
         } catch (Exception e) {
-            LOG.error("Cannot get the current language of the user " + currentUser.getUserId());
-        } finally {
-            return  lang;
+            LOG.error("Cannot get the current language of the user " + currentUser.getUserId(), e);
+            return  Locale.getDefault();
         }
 
     }
@@ -87,7 +98,7 @@ public class LocalizationServiceImp implements LocalizationService {
     private Locale getUserProfileLocale( ExoContainer container, String user) throws Exception {
 
         UserProfile userProfile = null;
-        OrganizationService svc = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);
+
         if (user != null) {
             try {
                 beginContext(svc);
@@ -98,7 +109,7 @@ public class LocalizationServiceImp implements LocalizationService {
                 try {
                     endContext(svc);
                 } catch (Exception ignored) {
-                    // we don't care
+                    LOG.error(ignored);
                 }
             }
 
