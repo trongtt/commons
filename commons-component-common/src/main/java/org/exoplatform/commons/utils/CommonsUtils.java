@@ -15,21 +15,12 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class CommonsUtils {
 	
 	private static final Log LOG = ExoLogger.getLogger(CommonsUtils.class.getName());
 
 	public static final String CONFIGURED_TENANT_MASTER_HOST_KEY = "tenant.masterhost";
 	public static final String CONFIGURED_DOMAIN_URL_KEY = "gatein.email.domain.url";
-
-    /**
-     * registered time zones.
-     */
-    private static volatile Map<String, TimeZone> TIME_ZONES = new ConcurrentHashMap<String, TimeZone>();
 
     /**
      * Gets the system session provider.
@@ -151,24 +142,6 @@ public class CommonsUtils {
       if(service instanceof ComponentRequestLifecycle) {
         ((ComponentRequestLifecycle) service).endRequest(ExoContainerContext.getCurrentContainer());
       }
-    }
-
-    /**
-     * This method is similar to {@link TimeZone#getTimeZone(String)} with less contention
-     */
-    public static TimeZone getTimeZone(String ID) {
-        if (ID == null) {
-            throw new IllegalArgumentException("ID of the timezone cannot be null");
-        }
-        if (ID.length() == 0) {
-            throw new IllegalArgumentException("ID of the timezone cannot be empty");
-        }
-        TimeZone tz = TIME_ZONES.get(ID);
-        if (tz == null) {
-            tz = TimeZone.getTimeZone(ID);
-            TIME_ZONES.put(ID, tz);
-        }
-        return tz;
     }
     
 }
