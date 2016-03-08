@@ -18,35 +18,24 @@
  */
 package org.exoplatform.commons.utils;
 
-import java.util.Map;
+import junit.framework.TestCase;
 import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by The eXo Platform SAS
  * Author : Aymen Boughzela
  *          aboughzela@exoplatform.com
  */
-public class DateUtils {
-    /**
-     * registered time zones.
-     */
-    private static volatile Map<String, TimeZone> TIME_ZONES = new ConcurrentHashMap<String, TimeZone>();
+public class DateUtilsTest extends TestCase {
+    public void testGetTimeZone() {
+        assertEquals(TimeZone.getTimeZone("GMT"), DateUtils.getTimeZone("GMT"));
+        assertEquals(TimeZone.getTimeZone("Africa/Tunis"), DateUtils.getTimeZone("Africa/Tunis"));
+        assertEquals(TimeZone.getTimeZone(""), DateUtils.getTimeZone(""));
+        try {
+            DateUtils.getTimeZone(null);
+            fail();
+        } catch (IllegalArgumentException exp) {
 
-
-    /**
-     * This method is similar to {@link TimeZone#getTimeZone(String)} with less contention
-     */
-    public static TimeZone getTimeZone(String ID) {
-        if (ID == null) {
-            throw new IllegalArgumentException("ID of the timezone cannot be null");
         }
-
-        TimeZone tz = TIME_ZONES.get(ID);
-        if (tz == null) {
-            tz = TimeZone.getTimeZone(ID);
-            TIME_ZONES.put(ID, tz);
-        }
-        return tz;
     }
 }
