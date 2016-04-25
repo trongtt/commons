@@ -18,6 +18,10 @@
       <groupId>org.exoplatform.commons</groupId>
       <artifactId>commons-component-product</artifactId>
     </dependency>
+      <dependency>
+       <groupId>org.exoplatform.commons</groupId>
+       <artifactId>commons-api</artifactId>
+     </dependency>
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
