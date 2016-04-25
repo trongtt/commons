@@ -141,6 +141,8 @@ public class UpgradeProductService implements Startable {
       }
     }
 
+    productInformations.storeProductsInformationsInJCR();
+
     LOG.info("Version upgrade completed.");
   }
 
