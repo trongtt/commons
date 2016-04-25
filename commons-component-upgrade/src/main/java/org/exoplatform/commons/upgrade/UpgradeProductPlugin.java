@@ -34,7 +34,6 @@ public abstract class UpgradeProductPlugin extends BaseComponentPlugin {
   private static final String PRODUCT_GROUP_ID = "product.group.id";
   private static final String OLD_PRODUCT_GROUP_ID = "old.product.group.id";
   private static final String UPGRADE_PLUGIN_EXECUTION_ORDER = "plugin.execution.order";
-
   private static final String UPGRADE_PLUGIN_ENABLE = "commons.upgrade.{$0}.enable";
 
   private ChromatticManager   chromatticManager;

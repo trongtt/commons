@@ -104,11 +104,13 @@ public class UpgradeProductService implements Startable {
     if (productInformations.isFirstRun()) {
       LOG.info("Proceed upgrade on first run = {}", proceedUpgradeFirstRun);
 
+      // If first run of upgrade API, and if disabled on first run, ignore plugins
       if (!proceedUpgradeFirstRun) {
         LOG.info("Ignore all upgrade plugins");
         return;
       }
 
+      // If first run, set previous version to 0
       productInformations.setPreviousVersionsIfFirstRun(PRODUCT_VERSION_ZERO);
     }
 
@@ -121,26 +123,23 @@ public class UpgradeProductService implements Startable {
     // the upgradePlugins list, execute these remaining plugins.
     for (int i = 0; i < upgradePlugins.size(); i++) {
       UpgradeProductPlugin upgradeProductPlugin = upgradePlugins.get(i);
-      String previousUpgradePluginVersion = getPreviousVersion(upgradeProductPlugin);
-      String currentUpgradePluginVersion = getCurrentVersion(upgradeProductPlugin);
+      String previousProductPluginVersion = getPreviousVersion(upgradeProductPlugin);
+      String currentProductPluginVersion = getCurrentVersion(upgradeProductPlugin);
 
       // The plugin will determine if it should proceed to upgrade
-      if (upgradeProductPlugin.shouldProceedToUpgrade(currentUpgradePluginVersion, previousUpgradePluginVersion)) {
+      if (upgradeProductPlugin.shouldProceedToUpgrade(currentProductPluginVersion, previousProductPluginVersion)) {
         LOG.info("Proceed upgrade plugin: name = " + upgradeProductPlugin.getName() + " from version "
-            + previousUpgradePluginVersion + " to " + currentUpgradePluginVersion);
+            + previousProductPluginVersion + " to " + currentProductPluginVersion);
         // Product upgrade plugin
-        upgradeProductPlugin.processUpgrade(previousUpgradePluginVersion, currentUpgradePluginVersion);
+        upgradeProductPlugin.processUpgrade(previousProductPluginVersion, currentProductPluginVersion);
         LOG.info("Upgrade " + upgradeProductPlugin.getName() + " completed.");
       } else {
         LOG.info("Ignore upgrade plugin {} from version {} to {}",
                  upgradeProductPlugin.getName(),
-                 previousUpgradePluginVersion,
-                 currentUpgradePluginVersion);
+                 previousProductPluginVersion,
+                 currentProductPluginVersion);
       }
     }
-
-    // The product has been upgraded, change the product version in the JCR
-    productInformations.storeProductsInformationsInJCR();
 
     LOG.info("Version upgrade completed.");
   }
