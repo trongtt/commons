@@ -16,11 +16,9 @@ import org.exoplatform.commons.api.settings.SettingService;
 import org.exoplatform.commons.api.settings.SettingValue;
 import org.exoplatform.commons.api.settings.data.Context;
 import org.exoplatform.commons.api.settings.data.Scope;
-import org.exoplatform.commons.chromattic.ChromatticManager;
 import org.exoplatform.commons.info.ProductInformations;
 import org.exoplatform.commons.utils.PropertyManager;
 import org.exoplatform.container.component.BaseComponentPlugin;
-import org.exoplatform.container.component.RequestLifeCycle;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.log.ExoLogger;
@@ -36,8 +34,6 @@ public abstract class UpgradeProductPlugin extends BaseComponentPlugin {
   private static final String UPGRADE_PLUGIN_EXECUTION_ORDER = "plugin.execution.order";
   private static final String UPGRADE_PLUGIN_ENABLE = "commons.upgrade.{$0}.enable";
 
-  private ChromatticManager   chromatticManager;
-
   private SettingService      settingService;
 
   private int pluginExecutionOrder;
@@ -50,10 +46,9 @@ public abstract class UpgradeProductPlugin extends BaseComponentPlugin {
   protected String oldProductGroupId;
 
 
-  public UpgradeProductPlugin(SettingService settingService, ChromatticManager chromatticManager, InitParams initParams) {
+  public UpgradeProductPlugin(SettingService settingService, InitParams initParams) {
     this(initParams);
     this.settingService = settingService;
-    this.chromatticManager = chromatticManager;
   }
 
   public UpgradeProductPlugin(InitParams initParams) {
@@ -192,13 +187,9 @@ public abstract class UpgradeProductPlugin extends BaseComponentPlugin {
   }
 
   public String getValue(String paramName) {
-    if (chromatticManager == null) {
-      throw new IllegalStateException("ChromatticManager Service is not set");
-    }
     if (settingService == null) {
       throw new IllegalStateException("SettingService Service is not set");
     }
-    RequestLifeCycle.begin(chromatticManager);
     try {
       Scope appId = Scope.APPLICATION.id(getName());
       SettingValue<?> paramValue = settingService.get(Context.GLOBAL, appId, paramName);
@@ -207,23 +198,17 @@ public abstract class UpgradeProductPlugin extends BaseComponentPlugin {
       }
       return null;
     } finally {
-      RequestLifeCycle.end();
       Scope.APPLICATION.id(null);
     }
   }
 
   public void storeValueForPlugin(String paramName, String paramValue) {
-    if (chromatticManager == null) {
-      throw new IllegalStateException("ChromatticManager Service is not set");
-    }
     if (settingService == null) {
       throw new IllegalStateException("SettingService Service is not set");
     }
-    RequestLifeCycle.begin(chromatticManager);
     try {
       settingService.set(Context.GLOBAL, Scope.APPLICATION.id(getName()), paramName, SettingValue.create(paramValue));
     } finally {
-      RequestLifeCycle.end();
       Scope.APPLICATION.id(null);
     }
   }
