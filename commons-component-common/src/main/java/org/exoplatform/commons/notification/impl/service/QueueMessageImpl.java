@@ -375,15 +375,17 @@ public class QueueMessageImpl extends AbstractService implements QueueMessage, S
 
   private static String decompress(InputStream is) throws IOException {
     GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
-    StringBuilder string = new StringBuilder();
     byte[] data = new byte[BUFFER_SIZE];
     int bytesRead;
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
     while ((bytesRead = gis.read(data)) != -1) {
-      string.append(new String(data, 0, bytesRead));
+      buffer.write(data,0,bytesRead);
     }
     gis.close();
     is.close();
-    return string.toString();
+    buffer.close();
+    return new String(buffer.toByteArray());
   }
 
   public String removeAll() {
