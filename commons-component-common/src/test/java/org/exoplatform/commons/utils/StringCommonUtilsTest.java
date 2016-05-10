@@ -17,10 +17,7 @@
 package org.exoplatform.commons.utils;
 
 import junit.framework.TestCase;
-import org.exoplatform.commons.notification.impl.service.QueueMessageImpl;
-
 import java.io.InputStream;
-import java.lang.reflect.Method;
 
 
 /**
