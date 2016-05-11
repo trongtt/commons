@@ -106,8 +106,8 @@ public class StringCommonUtils {
   }
 
   public static String decompress(InputStream is) throws IOException {
-    GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);;
-    ByteArrayOutputStream buffer = new ByteArrayOutputStream(); ;
+    GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
     try {
 
       byte[] data = new byte[BUFFER_SIZE];
