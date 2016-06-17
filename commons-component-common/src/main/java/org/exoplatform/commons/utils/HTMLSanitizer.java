@@ -28,14 +28,8 @@ import java.util.regex.Pattern;
 import com.google.common.base.Predicate;
 
 /**
- * XSS issues occur in presentation layer when the data is displayed to the end user.
- * Preventing this at apache level is not a valid approach.
- * <p>
- * OWASP Java HTML Sanitizer API is a library (not a filter software) that provides XSS/XEE protection
- * as an API to encode data in presentation layer.
- * Whenever something that is affected from user input is to be displayed, proper encoding should be applied.
- * <p>
- * Moreover, we aim to replace the old lib called AntiSamy by this one.
+ * Prevent XSS/XEE attacks by encoding user HTML inputs.
+ * This class will be used to encode data in in presentation layer.
  *
  * @author <a href="kmenzli@exoplatform.com">Khemais MENZLI</a>
  * @version $Revision$
