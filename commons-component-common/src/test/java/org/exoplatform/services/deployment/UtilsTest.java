@@ -194,7 +194,7 @@ public class UtilsTest extends BaseNotificationTestCase {
    * Export version history data of a node
    * 
    * @param currentNode
-   * @param format
+   * @param format specify the format used to exported version history it could be docview format or sysview format
    * @return a zipped file containing the version history data of a node
    * @throws Exception
    */

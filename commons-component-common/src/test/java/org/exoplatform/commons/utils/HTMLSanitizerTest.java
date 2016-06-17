@@ -18,25 +18,27 @@
  */
 package org.exoplatform.commons.utils;
 
-import org.exoplatform.commons.testing.BaseCommonsTestCase;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.owasp.html.examples.EbayPolicyExample;
 
 /**
  * Created by kmenzli on 16/06/16.
  */
-public class HTMLSanitizerTest extends BaseCommonsTestCase {
+public class HTMLSanitizerTest {
 
+    @Test(timeout=100)
     public void testEmpty() throws Exception {
         assertEquals("", HTMLSanitizer.sanitize(""));
         assertEquals("", HTMLSanitizer.sanitize(null));
     }
 
+    @Test(timeout=100)
     public void testEncodeImg() throws Exception {
         String input1 = "<img alt='crying' height='23' src='http://localhost:8080/CommonsResources/ckeditor/plugins/smiley/images/cry_smile.png' title='crying' width='23' onerror='alert('XSS')' onmousemove='alert('XSS1')'/>";
         assertEquals("<img alt=\"crying\" height=\"23\" src=\"http://localhost:8080/CommonsResources/ckeditor/plugins/smiley/images/cry_smile.png\" title=\"crying\" width=\"23\" />", HTMLSanitizer.sanitize(input1));
     }
 
+    @Test(timeout=100)
     public void testSanitizeRemovesScripts() throws Exception {
         String input =
             "<p>Hello World</p>"
@@ -45,13 +47,15 @@ public class HTMLSanitizerTest extends BaseCommonsTestCase {
         assertEquals("<p>Hello World</p>", sanitized);
     }
 
-    public static final void testSanitizeRemovesOnclick() throws Exception {
+    @Test(timeout=100)
+    public void testSanitizeRemovesOnclick() throws Exception {
         String input = "<p onclick=\"alert(\"bad\");\">Hello World</p>";
         String sanitized = HTMLSanitizer.sanitize(input);
         assertEquals("<p>Hello World</p>", sanitized);
     }
 
-    public static final void testTextAllowedInLinks() throws Exception {
+    @Test(timeout=100)
+    public void testTextAllowedInLinks() throws Exception {
         String input = "<a href=\"../good.html\">click here</a>";
         String sanitized = HTMLSanitizer.sanitize(input);
         assertEquals("<a href=\"../good.html\" rel=\"nofollow\">click here</a>",sanitized);

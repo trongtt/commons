@@ -35,8 +35,7 @@ import com.google.common.base.Predicate;
  * as an API to encode data in presentation layer.
  * Whenever something that is affected from user input is to be displayed, proper encoding should be applied.
  * <p>
- * Moreover, we aim to replace the old lib called AntiSamy by this one
- * applications relying on this through to the end of lifecycle.
+ * Moreover, we aim to replace the old lib called AntiSamy by this one.
  *
  * @author <a href="kmenzli@exoplatform.com">Khemais MENZLI</a>
  * @version $Revision$
