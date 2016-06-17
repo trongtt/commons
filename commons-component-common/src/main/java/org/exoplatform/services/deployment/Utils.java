@@ -16,33 +16,22 @@
  */
 package org.exoplatform.services.deployment;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
-
 import org.exoplatform.commons.utils.CommonsUtils;
-import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.util.VersionHistoryImporter;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
-import org.owasp.validator.html.AntiSamy;
-import org.owasp.validator.html.CleanResults;
-import org.owasp.validator.html.Policy;
+
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author benjaminmestrallet
@@ -51,7 +40,6 @@ public class Utils {
   private final static Log   LOG          = ExoLogger.getLogger(Utils.class);
   
   public static final String MAPPING_FILE = "mapping.properties";
-  private static final String POLICY_FILE_LOCATION = "jar:/conf/portal/antisamy.xml";
 
   public static Node makePath(Node rootNode, String path, String nodetype)
   throws PathNotFoundException, RepositoryException {
@@ -216,28 +204,6 @@ public class Utils {
   private static String getVersionHistory(String valueHistory) {
     String[] arrHistoryValue = valueHistory.split(";");
     return arrHistoryValue[0];
-  }
-  
-  public static String sanitize(String value) {
-    try {
-      ConfigurationManager configMan = CommonsUtils.getService(ConfigurationManager.class);
-      Policy policy = Policy.getInstance(configMan.getResource(POLICY_FILE_LOCATION));
-      AntiSamy as = new AntiSamy();
-      CleanResults cr = as.scan(value, policy);
-      value = cr.getCleanHTML();
-      return value;
-    } catch(Exception ex) {
-      return value;
-    }
-  }
-  public static String sanitizeSearch(String value) {
-    try {
-      value = sanitize(value);
-      value = value.replaceAll("<iframe", "").replaceAll("<frame", "").replaceAll("<frameset", "");
-      return value;
-    } catch(Exception ex) {
-      return value;
-    }
   }
   
   /**

@@ -165,17 +165,11 @@ public class UtilsTest extends BaseNotificationTestCase {
     assertTrue(importedNode.hasNode("subFolder2"));
   }
   
-  public void testSanitization() throws Exception {
-    assertEquals(Utils.sanitize("12345 78 0"), "12345 78 0");
-    assertEquals(Utils.sanitize("12345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 0"), 
-    	  "12345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 012345 78 0");
-  }
-  
   /**
    * Export a node to XML with document view or system view
    * 
    * @param currentNode
-   * @param docview or sysview
+   * @param format or sysview
    * @return XML file
    * @throws Exception
    */
