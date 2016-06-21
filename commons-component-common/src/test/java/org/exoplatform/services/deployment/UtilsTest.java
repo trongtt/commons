@@ -169,7 +169,7 @@ public class UtilsTest extends BaseNotificationTestCase {
    * Export a node to XML with document view or system view
    * 
    * @param currentNode
-   * @param format or sysview
+   * @param format specify the format used to exported the current JCR node, it could be docview format or sysview format
    * @return XML file
    * @throws Exception
    */
