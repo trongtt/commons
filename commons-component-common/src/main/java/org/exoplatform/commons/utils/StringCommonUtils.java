@@ -20,24 +20,16 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 /**
- * Created by The eXo Platform SAS
- * Author : eXoPlatform
- *          exo@exoplatform.com
- * Dec 15, 2015  
+ * Created by The eXo Platform SAS Author : eXoPlatform exo@exoplatform.com Dec
+ * 15, 2015
  */
 public class StringCommonUtils {
 
-  private static final int               BUFFER_SIZE           = 32;
+  private static final int BUFFER_SIZE = 32;
 
   public static InputStream compress(String string) throws IOException {
     ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
@@ -58,11 +50,11 @@ public class StringCommonUtils {
       int bytesRead;
 
       while ((bytesRead = gis.read(data)) != -1) {
-        buffer.write(data,0,bytesRead);
+        buffer.write(data, 0, bytesRead);
       }
 
       return new String(buffer.toByteArray());
-    }finally{
+    } finally {
       gis.close();
       is.close();
       buffer.close();

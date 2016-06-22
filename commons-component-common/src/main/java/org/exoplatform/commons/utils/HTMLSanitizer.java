@@ -18,14 +18,14 @@
  */
 package org.exoplatform.commons.utils;
 
-import com.google.common.base.Function;
-import com.google.common.base.Throwables;
-import org.owasp.html.*;
-
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.regex.Pattern;
+
+import org.owasp.html.*;
+
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
+import com.google.common.base.Throwables;
 
 /**
  * Prevent XSS/XEE attacks by encoding user HTML inputs.

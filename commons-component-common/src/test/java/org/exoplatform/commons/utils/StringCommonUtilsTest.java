@@ -16,18 +16,16 @@
  */
 package org.exoplatform.commons.utils;
 
-import junit.framework.TestCase;
 import java.io.InputStream;
 
+import junit.framework.TestCase;
 
 /**
- * Created by The eXo Platform SAS
- * Author : eXoPlatform
- *          exo@exoplatform.com
- * Dec 15, 2015  
+ * Created by The eXo Platform SAS Author : eXoPlatform exo@exoplatform.com
+ * Dec 15, 2015
  */
 public class StringCommonUtilsTest extends TestCase {
-  
+
   public void testCompressDecompress() throws Exception {
 
     String initialString = "abcdefghijklmnopqrstuvwxyzabcdeéabcd";
