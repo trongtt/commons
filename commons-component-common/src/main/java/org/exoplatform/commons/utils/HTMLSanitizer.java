@@ -21,6 +21,7 @@ package org.exoplatform.commons.utils;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.owasp.html.*;
 
 import com.google.common.base.Function;
@@ -345,5 +346,18 @@ abstract public class HTMLSanitizer {
       }
     };
   }
+
+    /**
+     * This service reads HTML stored in DB and unescape special chars
+     *
+     *
+     * @param html sequence to unescape
+     * @return Unescape HTML to display on view template
+     * @throws Exception
+     */
+    public static String unescapeHtml(String html) throws Exception {
+        return StringEscapeUtils.unescapeHtml(html);
+
+    }
 
 }
