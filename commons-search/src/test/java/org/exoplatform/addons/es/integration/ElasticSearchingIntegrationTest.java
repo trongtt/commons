@@ -43,6 +43,8 @@ public class ElasticSearchingIntegrationTest extends BaseIntegrationTest {
 
   @Before
   public void initServices() {
+    super.setup();
+
     Identity identity = new Identity("BCH", Collections.singletonList(new MembershipEntry("Admin")));
     ConversationState.setCurrent(new ConversationState(identity));
     elasticSearchServiceConnector = new ElasticSearchServiceConnector(getInitConnectorParams(), elasticSearchingClient);
