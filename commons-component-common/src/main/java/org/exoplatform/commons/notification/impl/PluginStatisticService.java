@@ -56,6 +56,10 @@ public class PluginStatisticService {
   private long postActivitySpaceCreatedMessageCount = 0;
   private long postActivitySpaceCreatedNotifCount = 0;
   private long postActivitySpaceCreatedDigestCount = 0;
+
+  private long shareDocumentCreatedMessageCount = 0;
+  private long shareDocumentCreatedNotifCount = 0;
+  private long shareDocumentCreatedDigestCount = 0;
   
   private long relationshipRecievedCreatedMessageCount = 0;
   private long relationshipRecievedCreatedNotifCount = 0;
@@ -87,6 +91,8 @@ public class PluginStatisticService {
       postActivityCreatedMessageCount++;
     } else if ("PostActivitySpaceStreamPlugin".equalsIgnoreCase(pluginId)) {
       postActivitySpaceCreatedMessageCount++;
+    } else if ("ShareDocumentPlugin".equalsIgnoreCase(pluginId)) {
+      shareDocumentCreatedMessageCount++;
     } else if ("RelationshipRecievedRequestPlugin".equalsIgnoreCase(pluginId)) {
       relationshipRecievedCreatedMessageCount++;
     } else if ("RequestJoinSpacePlugin".equalsIgnoreCase(pluginId)) {
@@ -114,6 +120,8 @@ public class PluginStatisticService {
       postActivityCreatedNotifCount++;
     } else if ("PostActivitySpaceStreamPlugin".equalsIgnoreCase(pluginId)) {
       postActivitySpaceCreatedNotifCount++;
+    } else if ("ShareDocumentPlugin".equalsIgnoreCase(pluginId)) {
+      shareDocumentCreatedNotifCount++;
     } else if ("RelationshipRecievedRequestPlugin".equalsIgnoreCase(pluginId)) {
       relationshipRecievedCreatedNotifCount++;
     } else if ("RequestJoinSpacePlugin".equalsIgnoreCase(pluginId)) {
@@ -141,6 +149,8 @@ public class PluginStatisticService {
       this.postActivityCreatedDigestCount++;
     } else if ("PostActivitySpaceStreamPlugin".equalsIgnoreCase(pluginId)) {
       this.postActivitySpaceCreatedDigestCount++;
+    } else if ("ShareDocumentPlugin".equalsIgnoreCase(pluginId)) {
+      this.shareDocumentCreatedDigestCount++;
     } else if ("RelationshipRecievedRequestPlugin".equalsIgnoreCase(pluginId)) {
       this.relationshipRecievedCreatedDigestCount++;
     } else if ("RequestJoinSpacePlugin".equalsIgnoreCase(pluginId)) {
