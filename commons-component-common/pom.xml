@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <artifactId>commons</artifactId>
     <groupId>org.exoplatform.commons</groupId>
-    <version>4.4.x-SNAPSHOT</version>
+    <version>4.4.x-wysiwyg-microblog-SNAPSHOT</version>
   </parent>
   <artifactId>commons-component-common</artifactId>
   <packaging>jar</packaging>
-  <name>eXo PLF:: Commons - Common Services</name>
+  <name>eXo Commons - Common Services</name>
   <dependencies>
     <dependency>
       <groupId>commons-lang</groupId>
@@ -51,12 +52,12 @@
       <artifactId>exo.jcr.component.core</artifactId>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>xml-apis-ext</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis-ext</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -167,13 +168,13 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>4.1.12.Final</version>
       <exclusions>
         <exclusion>
-          <artifactId>jboss-transaction-api_1.1_spec</artifactId>
           <groupId>org.jboss.spec.javax.transaction</groupId>
+          <artifactId>jboss-transaction-api_1.1_spec</artifactId>
         </exclusion>
       </exclusions>
+      <version>4.1.12.Final</version>
     </dependency>
   </dependencies>
   <build>
